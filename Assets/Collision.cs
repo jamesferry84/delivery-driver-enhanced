@@ -51,6 +51,10 @@ public class Collision : MonoBehaviour
 
     void Update()
     {
+        if (countdownTimer < 0)
+        {
+            LoadLevel();
+        }
         if (timerTriggered)
         {
             timer -= Time.deltaTime;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Collision : MonoBehaviour
 {
@@ -19,8 +20,11 @@ public class Collision : MonoBehaviour
 
     [SerializeField] GameObject arrowTarget;
     RotateAround arrowTargetScript;
+
+    private int parcelsDelivered = 0;
     void Start()
     {
+        parcelsDelivered = 0;
         spriteRenderer = GetComponent<SpriteRenderer>();
         foreach (GameObject address in deliveryAddresses)
         {
@@ -33,6 +37,11 @@ public class Collision : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         Debug.Log("Crash");
+    }
+
+    void LoadLevel()
+    {
+        SceneManager.LoadScene(0);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -51,12 +60,18 @@ public class Collision : MonoBehaviour
         if (other.tag.Equals("Customer") && hasParcel)
         {
             Debug.Log("Delivered");
+            parcelsDelivered++;
             hasParcel = false;
             spriteRenderer.color = noPackageColor;
             GameObject newParcel = Instantiate(spawnNewParcelObject);
             arrowTargetScript.SetTarget(newParcel.transform);
             Destroy(other.gameObject, delayToDestroy);
             deliveryAddresses.RemoveAt(deliveryAddresses.Count - 1);
+
+            if (parcelsDelivered >= 1)
+            {
+                Invoke(nameof(LoadLevel), 2f);
+            }
 
             newParcel.SetActive(true);
         }

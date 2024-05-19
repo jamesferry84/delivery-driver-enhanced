@@ -10,10 +10,10 @@ public class Player : MonoBehaviour
     [SerializeField] public float steerSpeed = 0.5f;
 
     float steerAmount;
+    
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame

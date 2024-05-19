@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ScaleUpAndDown : MonoBehaviour
 {
+    [SerializeField] private GameObject objectToScale;
     [SerializeField] float maxScaleSize = 1f;
 
     [SerializeField] float minScaleSize = .5f;
@@ -17,10 +18,10 @@ public class ScaleUpAndDown : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.localScale.x > maxScaleSize || transform.localScale.x < minScaleSize)
+        if (objectToScale.transform.localScale.x > maxScaleSize || objectToScale.transform.localScale.x < minScaleSize)
         {
             scaleFactor *= -1;
         }
-        transform.localScale += new Vector3(scaleFactor, scaleFactor, 0f) * Time.deltaTime;
+        objectToScale.transform.localScale += new Vector3(scaleFactor, scaleFactor, 0f) * Time.deltaTime;
     }
 }

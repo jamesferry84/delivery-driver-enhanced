@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,10 @@ public class Collision : MonoBehaviour
     [SerializeField] GameObject arrowTarget;
     [Header("UI")] 
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TextMeshProUGUI timerText;
     
     bool hasParcel = false;
+    private bool timerTriggered = false;
     GameObject spawnNewParcelObject;
 
     SpriteRenderer spriteRenderer;
@@ -27,6 +30,8 @@ public class Collision : MonoBehaviour
     RotateAround arrowTargetScript;
 
     private int parcelsDelivered = 0;
+    private int countdownTimer = 10;
+    private float timer = 10;
     [Header("Game Options")]
     [SerializeField] int parcelsToBeDelivered = 3;
     void Start()
@@ -41,10 +46,26 @@ public class Collision : MonoBehaviour
         spawnNewParcelObject.SetActive(false);
         arrowTargetScript = arrowTarget.GetComponent<RotateAround>();
         scoreText.text = parcelsToBeDelivered.ToString();
+        timerText.text = "";
     }
+
+    void Update()
+    {
+        if (timerTriggered)
+        {
+            timer -= Time.deltaTime;
+            countdownTimer = Convert.ToInt32(timer % 60);
+            timerText.text = countdownTimer.ToString();
+        }
+        else
+        {
+            timerText.text = "";
+            countdownTimer = 10;
+        }
+    }
+
     void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("Crash");
     }
 
     void LoadLevel()
@@ -57,6 +78,8 @@ public class Collision : MonoBehaviour
         if (other.tag.Equals("Parcel") && !hasParcel)
         {
             Debug.Log("Collected");
+            timerText.text = countdownTimer.ToString();
+            timerTriggered = true;
             hasParcel = true;
             spriteRenderer.color = other.GetComponent<SpriteRenderer>().color;
             GameObject addressToDeliver = deliveryAddresses.Last();
@@ -70,6 +93,7 @@ public class Collision : MonoBehaviour
             Debug.Log("Delivered");
             parcelsToBeDelivered--;
             parcelsDelivered++;
+            timer += 5;
             scoreText.text = parcelsToBeDelivered.ToString();
             hasParcel = false;
             spriteRenderer.color = noPackageColor;

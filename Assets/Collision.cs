@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,15 +14,21 @@ public class Collision : MonoBehaviour
 
     [SerializeField] List<GameObject> deliveryAddresses;
     [SerializeField] GameObject parcel;
+
+    [SerializeField] GameObject arrowTarget;
+    [Header("UI")] 
+    [SerializeField] private TextMeshProUGUI scoreText;
+    
     bool hasParcel = false;
     GameObject spawnNewParcelObject;
 
     SpriteRenderer spriteRenderer;
-
-    [SerializeField] GameObject arrowTarget;
+    
     RotateAround arrowTargetScript;
 
     private int parcelsDelivered = 0;
+    [Header("Game Options")]
+    [SerializeField] int parcelsToBeDelivered = 3;
     void Start()
     {
         parcelsDelivered = 0;
@@ -33,6 +40,7 @@ public class Collision : MonoBehaviour
         spawnNewParcelObject = Instantiate(parcel);
         spawnNewParcelObject.SetActive(false);
         arrowTargetScript = arrowTarget.GetComponent<RotateAround>();
+        scoreText.text = parcelsToBeDelivered.ToString();
     }
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -60,7 +68,9 @@ public class Collision : MonoBehaviour
         if (other.tag.Equals("Customer") && hasParcel)
         {
             Debug.Log("Delivered");
+            parcelsToBeDelivered--;
             parcelsDelivered++;
+            scoreText.text = parcelsToBeDelivered.ToString();
             hasParcel = false;
             spriteRenderer.color = noPackageColor;
             GameObject newParcel = Instantiate(spawnNewParcelObject);
@@ -68,7 +78,7 @@ public class Collision : MonoBehaviour
             Destroy(other.gameObject, delayToDestroy);
             deliveryAddresses.RemoveAt(deliveryAddresses.Count - 1);
 
-            if (parcelsDelivered >= 1)
+            if (parcelsToBeDelivered <= 0)
             {
                 Invoke(nameof(LoadLevel), 2f);
             }

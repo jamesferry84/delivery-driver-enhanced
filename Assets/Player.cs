@@ -21,11 +21,11 @@ public class Player : MonoBehaviour
     {
         
         float moveAmount = Input.GetAxis("Vertical") * ySpeed * Time.deltaTime;
-        if (moveAmount < 0 || moveAmount > 0) {
+        // if (moveAmount < 0 || moveAmount > 0) {
             steerAmount = Input.GetAxis("Horizontal") * steerSpeed * Time.deltaTime;
-        } else {
-            steerAmount = 0;
-        }
+        // } else {
+            // steerAmount = 0;
+        // }
         transform.Rotate(0,0,-steerAmount);
         transform.Translate(xSpeed,moveAmount,zSpeed);
 

@@ -86,9 +86,11 @@ public class Collision : MonoBehaviour
             timerTriggered = true;
             hasParcel = true;
             spriteRenderer.color = other.GetComponent<SpriteRenderer>().color;
-            GameObject addressToDeliver = deliveryAddresses.Last();
-            addressToDeliver.SetActive(true);
-            arrowTargetScript.SetTarget(addressToDeliver.transform);
+          //  GameObject addressToDeliver = deliveryAddresses.Last();
+          Parcel parcel = other.GetComponent<Parcel>();
+          GameObject addressToDeliver = parcel.DeliveryAddress;
+          addressToDeliver.SetActive(true);
+          arrowTargetScript.SetTarget(addressToDeliver.transform);
             Destroy(other.gameObject, delayToDestroy);
         }
 

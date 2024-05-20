@@ -8407,6 +8407,7 @@ GameObject:
   - component: {fileID: 797082908}
   - component: {fileID: 797082907}
   - component: {fileID: 797082909}
+  - component: {fileID: 797082910}
   m_Layer: 0
   m_Name: Parcel
   m_TagString: Parcel
@@ -8542,6 +8543,19 @@ MonoBehaviour:
   maxScaleSize: 2
   minScaleSize: 1
   scaleFactor: 0.8
+--- !u!114 &797082910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 797082905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ccd4396285234f93a38939732eaca11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deliveryAddress: {fileID: 465490911}
 --- !u!1 &805127359
 GameObject:
   m_ObjectHideFlags: 0
